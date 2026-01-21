@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker API UI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6fb;
+      color: #1f2937;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      color: #111827;
+    }
+    .card {
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 18px;
+      margin: 16px 0;
+      background: #fafafa;
+    }
+    label {
+      display: block;
+      margin: 10px 0 6px;
+      font-weight: 600;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      outline: none;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 10px;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .row-single {
+      display: block;
+    }
+    .success {
+      color: #065f46;
+      font-weight: 600;
+    }
+    .error {
+      color: #b91c1c;
+      font-weight: 600;
+    }
+    .transactions {
+      margin-top: 10px;
+    }
+    .transaction {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 10px 0;
+    }
+    .transaction:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Expense Tracker API UI</h1>
+
+  <!-- API Key Section -->
+  <div class="card">
+    <h2>Generate API Key</h2>
+    <label>Username</label>
+    <input id="username" placeholder="Enter username">
+
+    <button onclick="generateApiKey()">Generate API Key</button>
+    <p id="apiKeyResult"></p>
+  </div>
+
+  <!-- Login Section -->
+  <div class="card">
+    <h2>Login (API Key)</h2>
+    <label>API Key</label>
+    <input id="apiKeyInput" placeholder="Paste API key here">
+
+    <button onclick="login()">Login</button>
+    <p id="loginResult"></p>
+  </div>
+
+  <!-- Transaction Section -->
+  <div class="card">
+    <h2>Add Transaction</h2>
+
+    <label>Title</label>
+    <input id="title" placeholder="Example: Lunch">
+
+    <label>Amount</label>
+    <input id="amount" type="number" placeholder="Example: 100">
+
+    <label>Type</label>
+    <select id="type">
+      <option value="income">Income</option>
+      <option value="expense">Expense</option>
+    </select>
+
+    <button onclick="addTransaction()">Add Transaction</button>
+    <p id="transactionResult"></p>
+  </div>
+
+  <!-- Balance Section -->
+  <div class="card">
+    <h2>Balance</h2>
+    <button onclick="getBalance()">Get Balance</button>
+    <p id="balanceResult"></p>
+  </div>
+
+  <!-- Transactions Section -->
+  <div class="card">
+    <h2>Transactions</h2>
+    <button onclick="getTransactions()">Get Transactions</button>
+    <div id="transactionsList" class="transactions"></div>
+  </div>
+
+</div>
+
+<script>
+  const API_BASE_URL = "http://127.0.0.1:8000";
+
+  function setAuthHeader() {
+    const apiKey = document.getElementById("apiKeyInput").value;
+    return {
+      "Authorization": `Api-Key ${apiKey}`,
+      "Content-Type": "application/json"
+    };
+  }
+
+  async function generateApiKey() {
+    const username = document.getElementById("username").value;
+    const result = document.getElementById("apiKeyResult");
+
+    const res = await fetch(`${API_BASE_URL}/api/signup`, {
+      method: "POST",
+      body: JSON.stringify({ username }),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    const data = await res.json();
+    if (res.status === 201) {
+      result.innerHTML = `<span class="success">API Key generated: ${data.api_key}</span>`;
+      document.getElementById("apiKeyInput").value = data.api_key;
+    } else {
+      result.innerHTML = `<span class="error">${data.error || "Error generating API key"}</span>`;
+    }
+  }
+
+ function setAuthHeader() {
+    const apiKey = document.getElementById("apiKeyInput").value;
+    return {
+      "Authorization": `Api-Key ${apiKey}`,
+      "Content-Type": "application/json"
+    };
+  }
+
+  async function login() {
+    const result = document.getElementById("loginResult");
+
+    const res = await fetch(`${API_BASE_URL}/api/login_securely`, {
+      method: "POST",
+      headers: setAuthHeader()
+    });
+
+    const data = await res.json();
+
+    if (res.status === 200) {
+      result.innerHTML = `<span class="success">Login successful!</span>`;
+    } else {
+      result.innerHTML = `<span class="error">${data.detail || data.error || "Login failed"}</span>`;
+    }
+  }
+
+  async function addTransaction() {
+    const note = document.getElementById("title").value;
+    const amount = document.getElementById("amount").value;
+    const type = document.getElementById("type").value;
+    const result = document.getElementById("transactionResult");
+
+    const res = await fetch(`${API_BASE_URL}/api/add_transaction`, {
+      method: "POST",
+      headers: setAuthHeader(),
+      body: JSON.stringify({ note, amount, type })
+    });
+
+    const data = await res.json();
+
+    if (res.status === 201 || res.status === 200) {
+      result.innerHTML = `<span class="success">Added: ${data.note}</span>`;
+    } else {
+      result.innerHTML = `<span class="error">${data.error || "Failed to add transaction"}</span>`;
+    }
+  }
+
+  async function getBalance() {
+    const result = document.getElementById("balanceResult");
+
+    const res = await fetch(`${API_BASE_URL}/api/get_balance`, {
+      method: "GET",
+      headers: setAuthHeader()
+    });
+
+    const data = await res.json();
+    if (res.status === 200) {
+      result.innerHTML = `
+        <b>Total Income:</b> ${data.total_income}<br>
+        <b>Total Expense:</b> ${data.total_expense}<br>
+        <b>Total Balance:</b> ${data.total_balance}
+      `;
+    } else {
+      result.innerHTML = `<span class="error">${data.detail || "Failed to fetch balance"}</span>`;
+    }
+  }
+
+  async function getTransactions() {
+    const list = document.getElementById("transactionsList");
+    list.innerHTML = "";
+
+    const res = await fetch(`${API_BASE_URL}/api/get_transaction`, {
+      method: "GET",
+      headers: setAuthHeader()
+    });
+
+    const data = await res.json();
+    if (res.status === 200) {
+      data.forEach(t => {
+        const div = document.createElement("div");
+        div.className = "transaction";
+        div.innerHTML = `
+          <b>${t.note}</b> - ${t.type} - ${t.amount} - ${t.date}
+        `;
+        list.appendChild(div);
+      });
+    } else {
+      list.innerHTML = `<span class="error">${data.detail || "Failed to fetch transactions"}</span>`;
+    }
+  }
+</script>
+
+</body>
+</html>
