@@ -4,35 +4,35 @@
 
 This repository contains QA automation for the **Expense Tracker API** built with **Django REST Framework**.
 
-## 🔥 What is covered
+## What is covered
 
 This repo includes:
 
-### ✅ API Tests (pytest)
+### API Tests (pytest)
 - Auth flow (API key generation + login)
 - Expense flow
 - Validation checks
 - Public endpoint checks
 
-### ✅ UI Smoke Tests (Selenium)
+###  UI Smoke Tests (Selenium)
 - Open UI page
 - Generate API key
 - Verify core UI elements
 
-### ✅ Postman Collection
+###  Postman Collection
 - Auth
 - Add Transaction
 - Get Transactions
 - Get Balance
 
 
-### ✅ CI (GitHub Actions)
+###  CI (GitHub Actions)
 Runs tests on every push and shows a green badge.
 
 
 ---
 
-## 🧪 How to run tests locally
+##  How to run tests locally
 
 ### 1. Install dependencies
 
@@ -43,7 +43,7 @@ pytest  -v
 ```
 
 
-### ✅ UI Smoke Tests (web)
+###  UI Smoke Tests (web)
 - Open the UI view at `127.0.0.1:8000/ui/`
 - Generate API key using UI form
 - Verify key is displayed
@@ -79,4 +79,5 @@ X-API-KEY: your_api_key_here
 ## 1. DOWNLOAD APK FILE 
 ```bash
 http://locahost:8000/downoad_nexpenz
+
 ```
