@@ -25,11 +25,13 @@ jobs:
       - name: Run migrations
         run: |
           python manage.py migrate
+          python manage.py runserver
 
       - name: Run API Tests
         run: |
-          pytest backend/api_tests
+          pytest -v
 
       - name: Run UI Smoke Tests
         run: |
           pytest ui_tests
+
