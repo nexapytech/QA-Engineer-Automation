@@ -33,6 +33,6 @@ jobs:
 
       - name: Run UI Smoke Tests
         run: |
-          pytest ui_tests
+          pytest -v
 
 
