@@ -7,3 +7,5 @@ whitenoise
 pymysql
 pytest
 pytest-django
+selenium
+
