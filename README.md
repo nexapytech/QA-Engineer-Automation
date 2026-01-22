@@ -80,7 +80,7 @@ All real usage should point to the production API.
 ✅ Valid API key → 200 OK
 ---
 
-### 🧪 API Automation (Pytest)
+###  API Automation (Pytest)
 
 Covers critical backend workflows and edge cases, including:
 
@@ -101,7 +101,7 @@ Covers critical backend workflows and edge cases, including:
 
 ---
 
-### 🖥 UI Smoke Tests
+###  UI Smoke Tests
 
 Lightweight UI tests to ensure **core user flows are not broken**:
 
@@ -128,7 +128,7 @@ File location:
   ```bash
   postman/expense_tracker_api.postman_collection.json
 ```
-###Run API Tests
+### Run API Tests
 pytest -v
 
 **Ensure the application is running locally, then:**
@@ -143,9 +143,10 @@ Open the UI at:
  GET /api/transactions/
 X-API-KEY: your_api_key_here
 ```
-**Download APK**
+**Download Nexpenz APK**
 ```bash
-http://localhost:8000/download_nexpenz
+https://api.nexapytechnologies.com/download_nexpenz
 ```
+
 
 
