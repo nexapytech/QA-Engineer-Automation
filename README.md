@@ -7,18 +7,17 @@ This repository contains a **comprehensive QA automation framework** for the **E
 It is designed to validate **API correctness**, **UI stability**, and **end-to-end workflows**, while demonstrating **real-world QA engineering practices** such as CI integration, test layering, and environment-based execution.
 
 ---
-## 🧰 Tech Stack
+##  Tech Stack
 
-### 🧪 Test Automation
+###  Test Automation
 - **Python** – Core language for writing automated tests
 - **Pytest** – Primary test framework for API and UI automation
-
 
 ### 🌐 API & Backend
 - **Django REST Framework (DRF)** – Backend API under test
 - **RESTful APIs** – Stateless service communication
 
-### 📮 API Testing Tools
+###  API Testing Tools
 - **Postman** – Manual and exploratory API testing
 - **Postman Collections** – Reusable API request definitions
 
@@ -34,6 +33,51 @@ It is designed to validate **API correctness**, **UI stability**, and **end-to-e
 - **Localhost (development)** – Local execution and debugging
 - **Linux-based CI runners** – GitHub-hosted runners for automation
 
+
+## API Endpoints
+| Action                     | Method | Endpoint |
+|---------------------------|--------|----------|
+| Generate API Key           | POST   | /api/signup |
+| Login with API Key         | POST   | /api/login_securely |
+| View API Settings          | GET    | /api/settings |
+| Get Supported Currencies   | GET    | /api/get_currency |
+| Add Expense Transaction    | POST   | /api/add_transaction |
+| Get All Transactions       | GET    | /api/get_transaction |
+| Get Account Balance        | GET    | /api/get_balance |
+| Filter Transactions by Date| GET    | /api/filter_by_date_transaction |
+| Get API Version            | GET    | /api/version_control |
+
+
+---
+## Example
+```bash
+GET https://api.nexapytechnologies.com/api/get_balance
+API-KEY: your_api_key_here
+```
+**📌 Note: Requests to these endpoints must include a valid API key in the header.**
+
+---
+
+## 🌍 Environments
+###  Production
+```bash
+https://api.nexapytechnologies.com
+```
+
+### Development
+```bash
+http://localhost:8000
+```
+⚠️ Localhost is strictly for development and testing.
+All real usage should point to the production API.
+
+🚫 What Happens Without an API Key?
+
+❌ Missing API key → 401 Unauthorized
+
+❌ Invalid API key → 403 Forbidden
+
+✅ Valid API key → 200 OK
 ---
 
 ### 🧪 API Automation (Pytest)
@@ -103,4 +147,5 @@ X-API-KEY: your_api_key_here
 ```bash
 http://localhost:8000/download_nexpenz
 ```
+
 
